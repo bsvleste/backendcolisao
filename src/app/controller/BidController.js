@@ -11,7 +11,7 @@ router.use(auth);
 
 router.get('/',async(req,res)=>{
     const listaBid = await  Bid.find({}).populate('usuario');
-    console.log(listaBid)
+    //console.log(listaBid)
     return res.json(listaBid);            
 });
 

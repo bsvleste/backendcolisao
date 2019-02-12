@@ -16,7 +16,7 @@ router.post('/create',async(req,res)=>{
                 email,
                 senha,
             }
-            console.log(userDataSalve);
+            //console.log(userDataSalve);
 
             if(await Jogador.findOne({email}))
                 return res.json({
@@ -31,7 +31,7 @@ router.post('/create',async(req,res)=>{
                     });          
         }catch(err)
         {
-            console.log(err);
+            //console.log(err);
             return res.status(401).json({success:false,message:'Não foi possivel Cadastrar'});
         }
         /*
@@ -132,7 +132,7 @@ router.post('/reset_password',async(req,res)=>{
     try{
         const user = await Jogador.findOne({ email }).select('+passwordResetToken passwordResetExpires');
         
-        console.log(user);
+        //console.log(user);
         
         if(!user)
             return res.status(400).send({error:"Usuario invalido"});
