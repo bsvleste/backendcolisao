@@ -1,0 +1,42 @@
+/*query para alterar a mensalidade do mes*/
+
+db.mensalidade.updadeOne({_iduser:1,"mensalidade._id":id_da_mensalidade},
+                        {$set:{"mensalidade.$.status":"pago","mensalidade.$.valor":valor_da_mensalidade}})
+
+
+criar script para criar mensalidade automatica de todos os jogadores
+
+script para criar mensalidade automatica
+
+var jogadores=[
+	{
+		nome:"bruno"
+	},
+	{
+		nome:"Lennon"
+	},
+	{
+		nome:"Edvan"
+	}
+];
+var meses =['janeiro','fevereiro','março','abril','maio','junho','julho',
+			'agosto','setembro','outubro','novembro','dezembro'];
+var mes=[
+	
+    ];
+for(var i =0 ;i< meses.length ;i++)
+{
+			mes.push({descricao:meses[i],mensalidade:[]});
+
+	for(var nome of jogadores)
+	{
+	
+		mes[i].mensalidade.push({nome:nome,valor:50});
+
+	}
+	
+}
+
+
+console.log(mes);
+	
