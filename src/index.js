@@ -8,7 +8,7 @@ const app = express();
 const server  = require('http').Server(app);
 const io = require('socket.io')(server);
 /*servidor online*/
-const  porta = process.env.PORT || 8080;
+const  porta = process.env.PORT;
 /*servidor no pc*/
 //const porta = 3000;
 //conexão com o mongodb
