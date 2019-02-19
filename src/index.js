@@ -8,9 +8,9 @@ const app = express();
 const server  = require('http').Server(app);
 const io = require('socket.io')(server);
 /*servidor online*/
-//const  porta = process.env.PORT;
+const  porta = process.env.PORT;
 /*servidor no pc*/
-const porta = 3000;
+//const porta = 3000;
 //conexão com o mongodb
 mongoose.connect('mongodb://backendcolisao:t3ic0l03@ds155293.mlab.com:55293/backendcolisao',{
     useNewUrlParser:true
