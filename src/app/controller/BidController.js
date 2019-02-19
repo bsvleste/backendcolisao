@@ -7,6 +7,7 @@ const jwt = require('jsonwebtoken');
 const router = express.Router();
 const auth = require('../midleware/auth');
 
+router.use(auth);
 
 router.get('/',async(req,res)=>{
     const listaBid = await  Bid.find({}).populate('usuario');
