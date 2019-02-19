@@ -11,7 +11,6 @@ router.use(auth);
 
 router.get('/',async(req,res)=>{
     const listaBid = await  Bid.find({}).populate('usuario');
-    //console.log(listaBid)
     return res.json(listaBid);            
 });
 
@@ -23,7 +22,17 @@ router.post('/addBid',async(req,res)=>{
     }
     const salvaBid = await Bid.findOneAndUpdate({usuario:saveData.usuario},saveData,{upsert:true})
     const listaBid = await  Bid.find({}).populate('usuario');
-        
+    const checkBid = await Bid.aggregate([
+    {
+        $group: {
+            _id: "$bid",
+            count: {$sum: 1},
+        }
+    }
+]);
+    req.io.emit('contagem',checkBid);
+    
+
     req.io.emit('bid',listaBid);
 
     return res.json(listaBid);
