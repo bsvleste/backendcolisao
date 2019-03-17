@@ -30,5 +30,4 @@ require('./app/controller/index')(app);
     console.log('Service onLine ');
 })*/
 server.listen(porta,()=>{
-	console.log('serve on line');
 });
