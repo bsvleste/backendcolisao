@@ -80,11 +80,11 @@ router.post('/login',async(req,res)=>{
         usuario.senha = undefined;
 
         const generetionToken = jwt.sign({id:usuario.id}, config.JWT_KEY);
-        const isAdmToken = jwt.sign({id:usuario.id}, config.JWT_KEY);
+        const isAdmTokens = jwt.sign({id:usuario.id}, config.JWT_KEY);
         
         if(usuario.isAdm){
             return res.json({
-                isAdm:isAdmToken,
+                isAdm:isAdmTokens,
                 success:true,
                 message:"Logado",
                 token:generetionToken,
