@@ -32,5 +32,4 @@ require('./app/controller/index')(app);
 /*server.listen(porta,()=>{
     console.log('Service onLine ');
 })*/
-server.listen(porta,()=>{
-});
+server.listen(porta,()=>{});
