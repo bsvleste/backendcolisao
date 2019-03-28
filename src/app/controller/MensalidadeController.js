@@ -19,7 +19,13 @@ router.get('/:nome',async(req,res)=>{
     const listaMensalidade = await  Mensalidade.aggregate([{$match:{"mensalidade.nome":req.params.nome}},
                                                               {$unwind:"$mensalidade"},
                                                               {$match:{"mensalidade.nome":req.params.nome}}]).sort('_id');
-        return res.json(listaMensalidade);
+    return res.json(listaMensalidade);
+})
+
+router.get('/descricao/:mes',async(req,res)=>{
+    const {mes} = req.params;
+    const listaMensalidade = await  Mensalidade.find({descricao:mes});
+    return res.json(listaMensalidade);
 })
 router.post('/create',async(req,res)=>{
     try {
@@ -39,13 +45,14 @@ router.post('/create',async(req,res)=>{
             mes.push({_id:i+1,descricao:meses[i],mensalidade:[]});
             for(var jogadores of nome)
             { 
-                mes[i].mensalidade.push({_id:jogadores._id,nome:jogadores.nome,valor:50,status:"pendente"});
+                mes[i].mensalidade.push({_id:jogadores._id,nome:jogadores.nome,valor:0,status:"pendente"});
             }
         }      
         //console.log(mes);
         const criaMensalidade = await Mensalidade.create(mes);
         //avisa que novo tweet foi criado
         //req.io.emit('jogador',criaJogador);
+        console.log('criado com sucesso');
         return res.json(criaMensalidade);
 })
 module.exports = app => app.use('/mensalidade',router);
