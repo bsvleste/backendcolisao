@@ -1,9 +1,22 @@
 const express = require('express');
 const auth = require('../midleware/auth');
 const Jogador = require('../models/Jogador');
+const Scout = require('../models/ScoutModel');
 const Teste = require('../models/TesteMensalidade');
 const router = express.Router();
 
+
+router.post('/createscout',async(req,res)=>{
+    const scout = req.body;
+    const salvaScout = await Scout.create(scout);
+    return res.send("Ola");
+
+});
+router.get('/scoutpartida',async(req,res)=>{
+    const scoutJogador = await  Scout.find({}).populate('scout.usuario');
+    return res.json({scoutJogador})
+    
+})
 router.get('/',async (req,res)=>{
 	const mensalidade = await Teste.find().populate('jogador');
 	return res.json({mensalidade})
@@ -43,6 +56,6 @@ router.post('/create',async(req,res)=>{
         //avisa que novo tweet foi criado
         //req.io.emit('jogador',criaJogador);*/
 
-})
+});
 
 module.exports = app => app.use('/testeMensalidade', router)  ;

@@ -8,7 +8,6 @@ const router = express.Router();
 const auth = require('../midleware/auth');
 
 router.use(auth);
-
 router.get('/',async(req,res)=>{
 
     const listaMensalidade = await  Mensalidade.find({}).sort('_id');
@@ -29,13 +28,7 @@ router.get('/descricao/:mes',async(req,res)=>{
 })
 router.post('/create',async(req,res)=>{
     try {
-        // statements
-    } catch(error) {
-        // statements
-        return res.status(401).send({error:'Não foi possivel criar as mensalidades'})
-    }
-
-    const listaJogador = await Jogador.find({},{email:0,senha:0,isAdm:0,mensalidade:0,__v:0});
+        const listaJogador = await Jogador.find({},{email:0,senha:0,isAdm:0,mensalidade:0,__v:0});
         const  nome  = listaJogador;
         var meses =['janeiro','fevereiro','março','abril','maio','junho',
                     'julho','agosto','setembro','outubro','novembro','dezembro'];
@@ -54,6 +47,21 @@ router.post('/create',async(req,res)=>{
         //req.io.emit('jogador',criaJogador);
         console.log('criado com sucesso');
         return res.json(criaMensalidade);
+        // statements
+    } catch(error) {
+        // statements
+        return res.status(401).send({error:'Não foi possivel criar as mensalidades'})
+    }
+
+        
+});
+router.post('/update',async(req,res)=>{
+    
+    const {_id,id,descricao,valor,status,nome} = req.body;
+    const updateJogador = await Mensalidade.updateOne({'_id':id,"mensalidade._id":_id},
+    {$set:{"mensalidade.$.status":status,"mensalidade.$.valor":valor}});
+
+    return res.json(updateJogador);
 })
 module.exports = app => app.use('/mensalidade',router);
 
