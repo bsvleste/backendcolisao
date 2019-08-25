@@ -10,18 +10,18 @@ const auth = require('../midleware/auth');
 router.use(auth);
 
 router.get('/',async(req,res)=>{
-    const listaBid = await  Bid.find({}).populate('usuario');
+    const listaBid = await  Bid.find({}).populate('usuario').sort('bid');
     return res.json(listaBid);            
 });
 
 router.post('/addBid',async(req,res)=>{
     const {bid,usuario}  = req.body.bidData;
     const saveData={
-        bid,
+        bid,    
         usuario
     }
     const salvaBid = await Bid.findOneAndUpdate({usuario:saveData.usuario},saveData,{upsert:true})
-    const listaBid = await  Bid.find({}).populate('usuario');
+    const listaBid = await  Bid.find({}).populate('usuario').sort('bid');
     const checkBid = await Bid.aggregate([
     {
         $group: {

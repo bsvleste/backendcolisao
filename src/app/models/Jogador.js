@@ -1,13 +1,15 @@
 //importa as dependencias
 const mongoose = require('mongoose');
 const config = require('../../config/config');
-const bcrypt = require('bcrypt');
- 
+const bcrypt = require('bcrypt'); 
 //schema do Jogador
 const JogadorSchema = new mongoose.Schema({
     nome:{
         type:String,
         required:true,
+    },
+    fotoPerfil:{
+        type:String
     },
     senha:{
         type:String,
@@ -25,7 +27,7 @@ const JogadorSchema = new mongoose.Schema({
     isAdm:{
         type:Boolean,
         required:true,
-        default:false
+        default:true
     },
     passwordResetToken:{
         type:String,

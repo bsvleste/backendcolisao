@@ -9,7 +9,9 @@ const auth = require('../midleware/auth');
 router.get('/',async(req,res)=>{
     //console.log(checkBid);
     const listaJogadores = await Jogador.find({},{isAdm:0,email:0});
-    return res.json(listaJogadores);            
+    
+    return res.json(listaJogadores);  
+
 });
 
 
