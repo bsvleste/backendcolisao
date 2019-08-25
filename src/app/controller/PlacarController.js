@@ -7,7 +7,9 @@ const auth = require('../midleware/auth');
 router.post('/criaPlacar',async(req,res)=>{
     //console.log(checkBid);
     const criaPlacar = await Placar.create(req.body);
-    return res.json({
+	const listaPlacar = await Placar.find({}).sort('data');
+   	req.io.emit('placar',listaPlacar);
+	return res.json({
                     success:true,
                     message:'usuario Cadastrado com SUCESSO',
                     });  
