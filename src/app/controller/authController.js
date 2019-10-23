@@ -30,8 +30,8 @@ router.post('/update/:id',upload.single('image'),async(req,res)=>{
         );
     //apaga a image grande
     fs.unlinkSync(req.file.path);
-    const updateImg = await Jogador.updateOne({_id:id},{$set:{fotoPerfil:image}});
-    return res.json(updateImg);
+    //const updateImg = await Jogador.updateOne({_id:id},{$set:{fotoPerfil:image}});
+    return res.json({"imagem cadastrada"});
     }catch(err)
     {
         return res.status(401).json({success:false,message:'Não foi possivel Cadastrar'});
