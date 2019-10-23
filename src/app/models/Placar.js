@@ -13,12 +13,26 @@ const PlacarSchema = new mongoose.Schema({
 
     },
     segundo:{
-        type:String,
-        required:true
+        colisao:{
+            type:Number,
+            required:true
+        },
+        adversario:{
+            type:Number,
+            required:true
+        }
+
     },
     primeiro:{
-        type:String,
-        requried:true
+        colisao:{
+            type:Number,
+            required:true
+        },
+        adversario:{
+            type:Number,
+            required:true
+        }
+
     }
 });
 
