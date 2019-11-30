@@ -3,7 +3,7 @@ const Placar = require('../models/Placar');
 const router = express.Router();
 const auth = require('../midleware/auth');
 
-//router.use(auth);
+router.use(auth);
 router.post('/criaPlacar',async(req,res)=>{
     //console.log(checkBid);
     const criaPlacar = await Placar.create(req.body);
@@ -16,7 +16,6 @@ router.post('/criaPlacar',async(req,res)=>{
 
 });
 router.delete('/deletar/:id',async(req,res)=>{
-
     const deletaPlacar = await Placar.findById(req.params.id).deleteOne();
     const novoPlacar = await Placar.find({}).sort('data');
     req.io.emit('placar',novoPlacar);
@@ -27,7 +26,6 @@ router.delete('/deletar/:id',async(req,res)=>{
 router.post('/update',async(req,res)=>{
     //console.log(checkBid);
     const criaPlacar = await Placar.findById(req.body._id);
-
     criaPlacar.set(req.body);
     await criaPlacar.save();
 	
@@ -45,11 +43,6 @@ router.get('/editar/:id',async(req,res)=>{
 	return res.json(editarPlacar);
 });
 
-router.get('/',async(req,res)=>{
 
-	const listaPlacar = await Placar.find({}).sort('data');
-	console.log(listaPlacar);
-    return res.json(listaPlacar);
-});
 module.exports = app => app.use('/placar',router);
 
