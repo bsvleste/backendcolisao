@@ -16,7 +16,7 @@ const  porta = process.env.PORT || 3001;
 /*servidor no pc*/
 //const porta = 3000;
 //conexão com o mongodb
-mongoose.connect(process.env.MONGO_LOCAL,{
+mongoose.connect(process.env.MONGO_URL,{
     useNewUrlParser:true
 });
 
