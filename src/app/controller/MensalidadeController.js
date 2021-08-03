@@ -1,46 +1,66 @@
 const express = require('express');
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 const Jogador = require('../models/Jogador');
 const Mensalidade = require('../models/Mensalidade');
 const config = require('../../config/config');
-const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
+
 const router = express.Router();
 const auth = require('../midleware/auth');
 
 //router.use(auth);
-router.get('/',async(req,res)=>{
+router.get('/', async (req, res) => {
+    const listaMensalidade = await Mensalidade.find({}).sort('_id');
 
-    const listaMensalidade = await  Mensalidade.find({}).sort('_id');
-    
-    return res.json(listaMensalidade);            
+    return res.json(listaMensalidade);
 });
-router.get('/:nome',async(req,res)=>{
-    const listaMensalidade = await  Mensalidade.aggregate([{$match:{"mensalidade.nome":req.params.nome}},
-                                                              {$unwind:"$mensalidade"},
-                                                              {$match:{"mensalidade.nome":req.params.nome}}]).sort('_id');
+router.get('/:nome', async (req, res) => {
+    const listaMensalidade = await Mensalidade.aggregate([
+        { $match: { 'mensalidade.nome': req.params.nome } },
+        { $unwind: '$mensalidade' },
+        { $match: { 'mensalidade.nome': req.params.nome } },
+    ]).sort('_id');
     return res.json(listaMensalidade);
-})
+});
 
-router.get('/descricao/:mes',async(req,res)=>{
-    const {mes} = req.params;
-    const listaMensalidade = await  Mensalidade.find({descricao:mes});
+router.get('/descricao/:mes', async (req, res) => {
+    const { mes } = req.params;
+    const listaMensalidade = await Mensalidade.find({ descricao: mes });
     return res.json(listaMensalidade);
-})
-router.post('/create',async(req,res)=>{
+});
+router.post('/create', async (req, res) => {
     try {
-        const listaJogador = await Jogador.find({},{email:0,senha:0,isAdm:0,mensalidade:0,__v:0});
-        const  nome  = listaJogador;
-        var meses =['janeiro','fevereiro','março','abril','maio','junho',
-                    'julho','agosto','setembro','outubro','novembro','dezembro'];
-        var mes=[];
-        for(var i =0 ;i< meses.length ;i++)
-        {
-            mes.push({_id:i+1,descricao:meses[i],mensalidade:[]});
-            for(var jogadores of nome)
-            { 
-                mes[i].mensalidade.push({_id:jogadores._id,nome:jogadores.nome,valor:0,status:"pendente"});
+        const listaJogador = await Jogador.find(
+            {},
+            { email: 0, senha: 0, isAdm: 0, mensalidade: 0, __v: 0 }
+        );
+        const nome = listaJogador;
+        const meses = [
+            'janeiro',
+            'fevereiro',
+            'março',
+            'abril',
+            'maio',
+            'junho',
+            'julho',
+            'agosto',
+            'setembro',
+            'outubro',
+            'novembro',
+            'dezembro',
+        ];
+        const mes = [];
+        for (let i = 0; i < meses.length; i++) {
+            mes.push({ _id: i + 1, descricao: meses[i], mensalidade: [] });
+            for (const jogadores of nome) {
+                mes[i].mensalidade.push({
+                    _id: jogadores._id,
+                    nome: jogadores.nome,
+                    valor: 0,
+                    status: 'pendente',
+                });
             }
-        }      
+        }
         //console.log(mes);
         const criaMensalidade = await Mensalidade.create(mes);
         //avisa que novo tweet foi criado
@@ -48,22 +68,28 @@ router.post('/create',async(req,res)=>{
         console.log('criado com sucesso');
         return res.json(criaMensalidade);
         // statements
-    } catch(error) {
+    } catch (error) {
         // statements
-        return res.status(401).send({error:'Não foi possivel criar as mensalidades'})
+        return res
+            .status(401)
+            .send({ error: 'Não foi possivel criar as mensalidades' });
     }
-
-        
 });
-router.post('/update',async(req,res)=>{
-    
-    const {_id,id,descricao,valor,status,nome} = req.body;
-    const updateJogador = await Mensalidade.updateOne({'_id':id,"mensalidade._id":_id},
-    {$set:{"mensalidade.$.status":status,"mensalidade.$.valor":valor}});
+router.post('/update', async (req, res) => {
+    const { _id, id, descricao, valor, status, nome } = req.body;
+    const updateJogador = await Mensalidade.updateOne(
+        { _id: id, 'mensalidade._id': _id },
+        {
+            $set: {
+                'mensalidade.$.status': 'pago',
+                'mensalidade.$.valor': 50,
+            },
+        }
+    );
 
     return res.json(updateJogador);
-})
-module.exports = app => app.use('/mensalidade',router);
+});
+module.exports = (app) => app.use('/mensalidade', router);
 
 /*
 
@@ -94,8 +120,8 @@ module.exports = {
         const listaMensalidade = await Mensalidade.find({descricao:req.params.descricao});
         return res.json(listaMensalidade);
     },*/
-    //cria as mensalidades
-   /* async store(req,res){
+//cria as mensalidades
+/* async store(req,res){
         const listaJogador = await Jogador.find({},{email:0,senha:0,isAdm:0,mensalidade:0,__v:0});
         const  nome  = listaJogador;
         var meses =['janeiro','fevereiro','março','abril','maio','junho',

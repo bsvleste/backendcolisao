@@ -1,4 +1,4 @@
-const nodemailer = require('nodemailer');
+/* const nodemailer = require('nodemailer');
 const hbs = require('nodemailer-express-handlebars');
 const path  =require('path');
 const {host,port,user,pass} = require('../config/mail.json');
@@ -15,4 +15,4 @@ transport.use('compile',hbs({
 	extName: '.html',
 }));
 
-module.exports = transport;
+module.exports = transport; */
