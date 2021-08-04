@@ -71,7 +71,7 @@ module.exports = {
                 { id: usuario.id },
                 config.JWT_KEY
             );
-            const isAdmTokens = jwt.sign({ id: usuario.id }, config.JWT_KEY);
+            const isAdmTokens = jwt.sign({ id: usuario.id }, config.JWT_ADM);
 
             if (usuario.isAdm) {
                 return res.json({

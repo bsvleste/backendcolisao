@@ -17,7 +17,7 @@ module.exports = (req, res, next) => {
     if (!/^Bearer$/i.test(scheme))
         return res.status(402).send({ error: 'Token badformat' });
 
-    jwt.verify(token, config.JWT_KEY, (err, decoded) => {
+    jwt.verify(token, config.JWT_ADM, (err, decoded) => {
         if (err) res.status(403).send({ erro: 'Token invalid' });
         req.userId = decoded.id;
         return next();
