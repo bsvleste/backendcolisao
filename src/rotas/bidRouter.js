@@ -1,5 +1,5 @@
 const express = require('express');
-const BidControlerTeste = require('../app/controller/TesteBidController');
+const BidControlerTeste = require('../app/controller/BidController');
 const auth = require('../app/midleware/auth');
 
 const router = express.Router();

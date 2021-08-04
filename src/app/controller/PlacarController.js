@@ -1,5 +1,35 @@
-const express = require('express');
 const Placar = require('../models/Placar');
+
+module.exports = {
+    async getPlacar(req, res) {
+        try {
+            const listaPlacar = await Placar.find({}).sort('data');
+            req.io.emit('placar', listaPlacar);
+            return res.json(listaPlacar);
+        } catch (err) {
+            res.json({
+                message: 'erro ao listar placar',
+            });
+        }
+    },
+    async criarPlacar(req, res) {
+        try {
+            await Placar.create(req.body);
+            const listaPlacar = await Placar.find({}).sort('data');
+            req.io.emit('placar', listaPlacar);
+            return res.json({
+                success: true,
+                message: 'Placar Criado com sucesso',
+            });
+        } catch (err) {
+            return res.json({
+                message: 'Erro ao criar placar',
+            });
+        }
+    },
+};
+
+/* const express = require('express');
 
 const router = express.Router();
 const auth = require('../midleware/auth');
@@ -41,3 +71,4 @@ router.get('/editar/:id', async (req, res) => {
 });
 
 module.exports = (app) => app.use('/placar', router);
+ */

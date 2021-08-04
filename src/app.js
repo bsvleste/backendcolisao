@@ -1,10 +1,15 @@
 const express = require('express');
-const testeMensalidadeRotas = require('./rotas/testeMensalidade');
-const testeBidRotas = require('./rotas/testeBid');
-const authRouter = require('./rotas/authRouter');
-//import as rotas
 
 const app = express();
+const server = require('http').Server(app);
+const io = require('socket.io')(server);
+
+const testeMensalidadeRotas = require('./rotas/testeMensalidade');
+const bidRouter = require('./rotas/bidRouter');
+const authRouter = require('./rotas/authRouter');
+const placarRouter = require('./rotas/placarRouter');
+//import as rotas
+
 app.use(express.json());
 app.use(express.static(`${__dirname}/public`));
 app.use((req, res, next) => {
@@ -13,10 +18,14 @@ app.use((req, res, next) => {
     });
     next();
 });
-
+app.use((req, res, next) => {
+    req.io = io;
+    return next();
+});
 app.use('/api/colisao/v2/auth', authRouter);
 app.use('/api/colisao/v2/testeMensalidade', testeMensalidadeRotas);
-app.use('/api/colisao/v2/testebid', testeBidRotas);
+app.use('/api/colisao/v2/bid', bidRouter);
+app.use('/api/colisao/v2/placar', placarRouter);
 module.exports = app;
 //lib dotenv para configurar variaveis de ambiente no arquivo .env
 /* require('dotenv').config({ path: `${__dirname}/config/config.env` }); */
