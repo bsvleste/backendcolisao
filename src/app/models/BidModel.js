@@ -1,19 +1,17 @@
 //importa as dependencias
 const mongoose = require('mongoose');
- 
+
 //schema do Jogador
 const BidSchema = new mongoose.Schema({
-    bid:{
-        type:String,
-        required:true
+    bid: {
+        type: Boolean,
+        required: true,
     },
-    usuario:{
+    usuario: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Jogador',
-        require:true,        
-    }    
+        require: true,
+    },
 });
 
-
 module.exports = mongoose.model('BidModel', BidSchema);
-

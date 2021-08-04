@@ -8,9 +8,6 @@ const JogadorSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    fotoPerfil: {
-        type: String,
-    },
     senha: {
         type: String,
         required: true,
@@ -27,7 +24,7 @@ const JogadorSchema = new mongoose.Schema({
     isAdm: {
         type: Boolean,
         required: true,
-        default: true,
+        default: false,
     },
     passwordResetToken: {
         type: String,

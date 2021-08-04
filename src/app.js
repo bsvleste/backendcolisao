@@ -1,5 +1,7 @@
 const express = require('express');
 const testeMensalidadeRotas = require('./rotas/testeMensalidade');
+const testeBidRotas = require('./rotas/testeBid');
+const authRouter = require('./rotas/authRouter');
 //import as rotas
 
 const app = express();
@@ -11,7 +13,10 @@ app.use((req, res, next) => {
     });
     next();
 });
+
+app.use('/api/colisao/v2/auth', authRouter);
 app.use('/api/colisao/v2/testeMensalidade', testeMensalidadeRotas);
+app.use('/api/colisao/v2/testebid', testeBidRotas);
 module.exports = app;
 //lib dotenv para configurar variaveis de ambiente no arquivo .env
 /* require('dotenv').config({ path: `${__dirname}/config/config.env` }); */
