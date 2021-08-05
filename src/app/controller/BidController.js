@@ -2,7 +2,8 @@ const Bid = require('../models/BidModel');
 
 module.exports = {
     async getBid(req, res) {
-        return res.send({ ok: true });
+        const listaBid = await Bid.find({}).populate('usuario').sort('bid');
+        return res.json(listaBid);
     },
     async addBid(req, res) {
         const { bid } = req.body;

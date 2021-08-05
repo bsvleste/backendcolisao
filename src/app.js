@@ -1,4 +1,9 @@
+/* criar rota para excluir todos os bids apos determindo dia */
+require('dotenv').config({ path: `${__dirname}/config/config.env` });
+
 const express = require('express');
+const mongoose = require('mongoose');
+const cors = require('cors');
 
 const app = express();
 const server = require('http').Server(app);
@@ -9,7 +14,7 @@ const bidRouter = require('./rotas/bidRouter');
 const authRouter = require('./rotas/authRouter');
 const placarRouter = require('./rotas/placarRouter');
 //import as rotas
-
+app.use(cors());
 app.use(express.json());
 app.use(express.static(`${__dirname}/public`));
 app.use((req, res, next) => {
@@ -26,48 +31,18 @@ app.use('/api/colisao/v2/auth', authRouter);
 app.use('/api/colisao/v2/testeMensalidade', testeMensalidadeRotas);
 app.use('/api/colisao/v2/bid', bidRouter);
 app.use('/api/colisao/v2/placar', placarRouter);
-module.exports = app;
-//lib dotenv para configurar variaveis de ambiente no arquivo .env
-/* require('dotenv').config({ path: `${__dirname}/config/config.env` }); */
+mongoose
+    .connect(process.env.MONGO_URL, {
+        useNewUrlParser: true,
+        useCreateIndex: true,
+        useFindAndModify: false,
+        useUnifiedTopology: true,
+    })
+    .then(() => {
+        console.log('estamo conectado 🤪');
+    });
 
-//importa as dependencias
-/* const express = require('express');
-const mongoose = require('mongoose');
-const cors = require('cors');
-const path = require('path'); */
-//inicializa o express
-/* const app = express(); */
-//abilita o socket io
-/* const server = require('http').Server(app);
-const io = require('socket.io')(server); */
-/*servidor online*/
-/* const porta = process.env.PORT || 3333; */
-/*servidor no pc*/
-//const porta = 3000;
-//conexão com o mongodb
-/* mongoose.connect(process.env.MONGO_URL, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-}); */
-
-/* app.use((req, res, next) => {
-    req.io = io;
-    return next();
+const port = process.env.PORT || 3333;
+server.listen(port, () => {
+    console.log('Estamos on line 😋');
 });
-app.use(cors());
-app.use(express.json());
-app.use(
-    '/files',
-    express.static(path.resolve(__dirname, '..', 'uploads', 'uploadSize'))
-);
-require('./app/controller/index')(app); */
-//rotas
-//app.use(require('./routes'));
-//porta onde vai funcionar o servidor
-/*server.listen(porta,()=>{
-    console.log('Service onLine ');
-})*/
-/* server.listen(porta, () => {
-    console.log('estamos online');
-});
- */

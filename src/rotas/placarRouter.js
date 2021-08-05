@@ -5,6 +5,8 @@ const authAdm = require('../app/midleware/authAdm');
 const router = express.Router();
 
 router.route('/').get(PlacarController.getPlacar);
-router.use(authAdm);
+/* router.use(authAdm); */
 router.route('/criaPlacar').post(PlacarController.criarPlacar);
+router.route('/editar/:id').get(PlacarController.editar);
+router.route('/update').post(PlacarController.update);
 module.exports = router;

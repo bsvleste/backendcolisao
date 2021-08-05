@@ -12,6 +12,27 @@ module.exports = {
             });
         }
     },
+    async editar(req, res) {
+        try {
+            const editarPlacar = await Placar.findById(req.params.id);
+            return res.json(editarPlacar);
+        } catch (error) {
+            return res.json({ error: `${error}` });
+        }
+    },
+    async update(req, res) {
+        const criaPlacar = await Placar.findById(req.body._id);
+        criaPlacar.set(req.body);
+        await criaPlacar.save();
+
+        const listaPlacar = await Placar.find({}).sort('data');
+        req.io.emit('placar', listaPlacar);
+        return res.json({
+            success: true,
+            message: 'usuario Cadastrado com SUCESSO',
+        });
+    },
+
     async criarPlacar(req, res) {
         try {
             await Placar.create(req.body);
