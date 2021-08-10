@@ -5,8 +5,8 @@ const PlacarController = require('../app/controller/PlacarController');
 const authAdm = require('../app/midleware/authAdm');
 
 const router = express.Router();
-router.use(authAdm);
-router.route('/deletaBid').post(authAdm, BidControler.delete);
+/* router.use(authAdm); */
+router.route('/deletaBid').post(BidControler.delete);
 router.route('/criaPlacar').post(PlacarController.criarPlacar);
 router.route('/editar/:id').get(PlacarController.editar);
 router.route('/deleta/:id').post(PlacarController.deletaPlacar);
