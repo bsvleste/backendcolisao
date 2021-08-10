@@ -29,7 +29,7 @@ module.exports = {
         req.io.emit('placar', listaPlacar);
         return res.json({
             success: true,
-            message: 'usuario Cadastrado com SUCESSO',
+            message: 'Placar atualizado com SUCESSO',
         });
     },
 
@@ -45,6 +45,7 @@ module.exports = {
         } catch (err) {
             return res.json({
                 message: 'Erro ao criar placar',
+                error: `${err}`,
             });
         }
     },

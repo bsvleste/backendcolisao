@@ -11,6 +11,7 @@ const io = require('socket.io')(server);
 
 const testeMensalidadeRotas = require('./rotas/testeMensalidade');
 const bidRouter = require('./rotas/bidRouter');
+const rotaAdm = require('./rotas/rotaAdm');
 const authRouter = require('./rotas/authRouter');
 const placarRouter = require('./rotas/placarRouter');
 //import as rotas
@@ -30,6 +31,7 @@ app.use((req, res, next) => {
 app.use('/api/colisao/v2/auth', authRouter);
 app.use('/api/colisao/v2/testeMensalidade', testeMensalidadeRotas);
 app.use('/api/colisao/v2/bid', bidRouter);
+app.use('/api/colisao/v2/rotasAdm', rotaAdm);
 app.use('/api/colisao/v2/placar', placarRouter);
 mongoose
     .connect(process.env.MONGO_URL, {

@@ -1,6 +1,17 @@
 const Bid = require('../models/BidModel');
 
 module.exports = {
+    async delete(req, res) {
+        try {
+            await Bid.find({}).deleteMany();
+            return res.json({ message: 'Bid deletado com sucesso' });
+        } catch (err) {
+            return res.json({
+                message: 'erro ao deletar placar',
+                error: `${err}`,
+            });
+        }
+    },
     async getBid(req, res) {
         const listaBid = await Bid.find({}).populate('usuario').sort('bid');
         const checkBid = await Bid.aggregate([
