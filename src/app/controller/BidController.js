@@ -4,7 +4,12 @@ module.exports = {
     async delete(req, res) {
         try {
             await Bid.find({}).deleteMany();
-            return res.json({ message: 'Bid deletado com sucesso' });
+            const bidDeletado = await Bid.find({});
+            req.io.emit('deletaBid', bidDeletado);
+            return res.json({
+                message: 'Bid deletado com sucesso',
+                bidDeletado,
+            });
         } catch (err) {
             return res.json({
                 message: 'erro ao deletar placar',

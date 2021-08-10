@@ -5,10 +5,10 @@ const PlacarController = require('../app/controller/PlacarController');
 const authAdm = require('../app/midleware/authAdm');
 
 const router = express.Router();
-/* router.use(authAdm); */
-router.route('/deletaBid').post(BidControler.delete);
+router.use(authAdm);
 router.route('/criaPlacar').post(PlacarController.criarPlacar);
 router.route('/editar/:id').get(PlacarController.editar);
 router.route('/deleta/:id').post(PlacarController.deletaPlacar);
 router.route('/update').post(PlacarController.update);
+router.route('/deletaBid').post(BidControler.delete);
 module.exports = router;
