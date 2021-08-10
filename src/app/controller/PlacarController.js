@@ -1,6 +1,12 @@
 const Placar = require('../models/Placar');
 
 module.exports = {
+    async deletaPlacar(req, res) {
+        await Placar.findById(req.params.id).deleteOne();
+        const novoPlacar = await Placar.find({}).sort('data');
+        req.io.emit('placar', novoPlacar);
+        return res.json({ success: true, message: 'deletado com sucesso' });
+    },
     async getPlacar(req, res) {
         try {
             const listaPlacar = await Placar.find({}).sort('data');

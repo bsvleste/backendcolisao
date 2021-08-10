@@ -9,5 +9,6 @@ router.use(authAdm);
 router.route('/deletaBid').delete(authAdm, BidControler.delete);
 router.route('/criaPlacar').post(PlacarController.criarPlacar);
 router.route('/editar/:id').get(PlacarController.editar);
+router.route('/deleta/:id').delete(PlacarController.deletaPlacar);
 router.route('/update').post(PlacarController.update);
 module.exports = router;
