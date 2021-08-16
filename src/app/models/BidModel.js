@@ -12,6 +12,11 @@ const BidSchema = new mongoose.Schema({
         ref: 'Jogador',
         require: true,
     },
+    status: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'StatusBidModel',
+        require: true,
+    },
 });
 
 module.exports = mongoose.model('BidModel', BidSchema);

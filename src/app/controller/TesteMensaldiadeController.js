@@ -1,4 +1,4 @@
-const TesteMensalidade = require('../models/TesteMensalidade');
+/* const TesteMensalidade = require('../models/TesteMensalidade');
 const Jogador = require('../models/Jogador');
 
 module.exports = {

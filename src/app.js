@@ -9,7 +9,6 @@ const app = express();
 const server = require('http').Server(app);
 const io = require('socket.io')(server);
 
-const testeMensalidadeRotas = require('./rotas/testeMensalidade');
 const bidRouter = require('./rotas/bidRouter');
 const rotaAdm = require('./rotas/rotaAdm');
 const authRouter = require('./rotas/authRouter');
@@ -29,7 +28,6 @@ app.use((req, res, next) => {
     return next();
 });
 app.use('/api/colisao/v2/auth', authRouter);
-app.use('/api/colisao/v2/testeMensalidade', testeMensalidadeRotas);
 app.use('/api/colisao/v2/bid', bidRouter);
 app.use('/api/colisao/v2/rotasAdm', rotaAdm);
 app.use('/api/colisao/v2/placar', placarRouter);

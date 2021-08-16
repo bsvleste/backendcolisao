@@ -1,25 +1,58 @@
 const Bid = require('../models/BidModel');
+const StatusBid = require('../models/StatusBidModel');
 
 module.exports = {
+    async liberaBid(req, res) {
+        await StatusBid.create({ status: true });
+        const listStatus = await StatusBid.find({});
+        return res.json({ message: 'Bid liberado', listStatus });
+    },
+    async getStatus(req, res) {
+        const listStatus = await StatusBid.find({});
+        return res.json({ message: 'Bid liberado', listStatus });
+    },
     async delete(req, res) {
         try {
+            const listaBid = await Bid.find({})
+                .populate('usuario')
+                .populate('status')
+                .sort('bid');
+            const alterStatus = listaBid[0].status._id;
+
             await Bid.find({}).deleteMany();
+            await StatusBid.findByIdAndUpdate(
+                { _id: alterStatus },
+                { status: false }
+            );
+            const listStatus = await StatusBid.find({});
             const bidDeletado = await Bid.find({});
-            req.io.emit('deletaBid', bidDeletado);
+            const bidUpdate = {
+                bidDeletado,
+                listStatus,
+            };
+            req.io.emit('deletaBid', bidUpdate);
             return res.json({
                 message: 'Bid deletado com sucesso',
-                bidDeletado,
+                bidUpdate,
             });
         } catch (err) {
             return res.json({
-                message: 'erro ao deletar placar',
+                message: 'erro ao deletar bid',
                 error: `${err}`,
             });
         }
     },
+
     async getBid(req, res) {
-        const listaBid = await Bid.find({}).populate('usuario').sort('bid');
-        const checkBid = await Bid.aggregate([
+        const checkBid = await StatusBid.find({});
+        if (!checkBid[0].status) {
+            return res.json({ message: 'Bid negado' });
+        }
+        const listaBid = await Bid.find({})
+            .populate('usuario')
+            .populate('status')
+            .sort('bid');
+        const countBid = await Bid.aggregate([
             {
                 $group: {
                     _id: '$bid',
@@ -27,20 +60,31 @@ module.exports = {
                 },
             },
         ]);
-        req.io.emit('contagem', checkBid);
+        req.io.emit('contagem', countBid);
+
         return res.json(listaBid);
     },
     async addBid(req, res) {
+        const checkBid = await StatusBid.find({});
+        if (!checkBid[0].status) {
+            return res.json({ message: 'Bid negado' });
+        }
+        const idStatus = checkBid[0]._id;
         const { bid } = req.body;
         const saveData = {
             bid,
             usuario: req.userId,
+            status: idStatus,
         };
+
         await Bid.findOneAndUpdate({ usuario: saveData.usuario }, saveData, {
             upsert: true,
         });
-        const listaBid = await Bid.find({}).populate('usuario').sort('bid');
-        const checkBid = await Bid.aggregate([
+        const listaBid = await Bid.find({})
+            .populate('usuario')
+            .populate('status')
+            .sort('bid');
+        const contBid = await Bid.aggregate([
             {
                 $group: {
                     _id: '$bid',
@@ -48,10 +92,10 @@ module.exports = {
                 },
             },
         ]);
-        req.io.emit('contagem', checkBid);
+        req.io.emit('contagem', contBid);
 
         req.io.emit('bid', listaBid);
 
-        return res.json(checkBid);
+        return res.json(listaBid);
     },
 };
