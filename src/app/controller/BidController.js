@@ -3,7 +3,11 @@ const StatusBid = require('../models/StatusBidModel');
 
 module.exports = {
     async liberaBid(req, res) {
-        await StatusBid.create({ status: true });
+        await StatusBid.findOneAndUpdate(
+            {},
+            { status: true },
+            { upsert: true }
+        );
         const listStatus = await StatusBid.find({});
         return res.json({ message: 'Bid liberado', listStatus });
     },
@@ -20,7 +24,7 @@ module.exports = {
             const alterStatus = listaBid[0].status._id;
 
             await Bid.find({}).deleteMany();
-            await StatusBid.findByIdAndUpdate(
+            await StatusBid.findOneAndUpdate(
                 { _id: alterStatus },
                 { status: false }
             );
