@@ -9,6 +9,7 @@ module.exports = {
             { upsert: true }
         );
         const listStatus = await StatusBid.find({});
+        req.io.emit('listStatus', listStatus);
         return res.json({ message: 'Bid liberado', listStatus });
     },
     async getStatus(req, res) {
@@ -35,6 +36,7 @@ module.exports = {
                 listStatus,
             };
             req.io.emit('deletaBid', bidDeletado);
+            req.io.emit('listStatus', listStatus);
             return res.json({
                 message: 'Bid deletado com sucesso',
                 bidUpdate,
