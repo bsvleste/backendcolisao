@@ -34,7 +34,7 @@ module.exports = {
                 bidDeletado,
                 listStatus,
             };
-            req.io.emit('deletaBid', bidUpdate);
+            req.io.emit('deletaBid', bidDeletado);
             return res.json({
                 message: 'Bid deletado com sucesso',
                 bidUpdate,
