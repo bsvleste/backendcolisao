@@ -10,11 +10,11 @@ module.exports = {
         );
         const listStatus = await StatusBid.find({});
         req.io.emit('listStatus', listStatus);
-        return res.json({ message: 'Bid liberado', listStatus });
+        return res.json({ listStatus });
     },
     async getStatus(req, res) {
         const listStatus = await StatusBid.find({});
-        return res.json({ message: 'Bid liberado', listStatus });
+        return res.json({ listStatus });
     },
     async delete(req, res) {
         try {
