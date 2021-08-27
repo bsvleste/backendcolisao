@@ -5,5 +5,5 @@ const BidController = require('../app/controller/BidController');
 const router = express.Router();
 
 router.route('/').get(PlacarController.getPlacar);
-router.route('/').get(BidController.getStatus);
+router.route('/status').get(BidController.getStatus);
 module.exports = router;
