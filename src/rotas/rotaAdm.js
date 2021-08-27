@@ -12,5 +12,5 @@ router.route('/deleta/:id').post(PlacarController.deletaPlacar);
 router.route('/update').post(PlacarController.update);
 router.route('/deletaBid').post(BidControler.delete);
 router.route('/liberaBid').post(BidControler.liberaBid);
-router.route('/').get(BidControler.getStatus);
+
 module.exports = router;
