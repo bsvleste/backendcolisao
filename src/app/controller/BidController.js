@@ -9,12 +9,14 @@ module.exports = {
             { upsert: true }
         );
         const listStatus = await StatusBid.find({});
-        req.io.emit('listStatus', listStatus);
-        return res.json({ listStatus });
+        const { status } = listStatus[0];
+        req.io.emit('listStatus', status);
+        return res.json(status);
     },
     async getStatus(req, res) {
         const listStatus = await StatusBid.find({});
-        return res.json({ listStatus });
+        const { status } = listStatus[0];
+        return res.json({ status });
     },
     async delete(req, res) {
         try {
@@ -30,13 +32,14 @@ module.exports = {
                 { status: false }
             );
             const listStatus = await StatusBid.find({});
+            const { status } = listStatus[0];
             const bidDeletado = await Bid.find({});
             const bidUpdate = {
                 bidDeletado,
-                listStatus,
+                status,
             };
             req.io.emit('deletaBid', bidDeletado);
-            req.io.emit('listStatus', listStatus);
+            req.io.emit('listStatus', status);
             return res.json({
                 message: 'Bid deletado com sucesso',
                 bidUpdate,
