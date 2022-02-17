@@ -6,38 +6,6 @@ const Jogador = require('../models/Jogador');
 const config = require('../../config/config');
 
 module.exports = {
-    async create(req, res) {
-        try {
-            const { nome, email, senha } = req.body;
-            const userDataSalve = {
-                nome,
-                email,
-                senha,
-            };
-
-            if (await Jogador.findOne({ email }))
-                return res
-                    .json({
-                        success: false,
-                        message: 'Usuario Ja Cadastrado',
-                    })
-                    .status(401);
-
-            await Jogador.create(userDataSalve);
-            return res.json({
-                success: true,
-                message: 'usuario Cadastrado com SUCESSO',
-            });
-        } catch (err) {
-            //console.log(err);
-            return res.status(401).json({
-                success: false,
-                message: 'Não foi possivel Cadastrar',
-                err: `${err},nao foi possivel cadastrar`,
-            });
-        }
-    },
-
     async login(req, res) {
         try {
             const { email, senha } = req.body;
