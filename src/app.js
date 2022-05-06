@@ -2,7 +2,6 @@
 require('dotenv').config({ path: `${__dirname}/config/config.env` });
 
 const express = require('express');
-const mongoose = require('mongoose');
 const cors = require('cors');
 
 const app = express();
@@ -31,18 +30,5 @@ app.use('/api/colisao/v2/auth', authRouter);
 app.use('/api/colisao/v2/bid', bidRouter);
 app.use('/api/colisao/v2/rotasAdm', rotaAdm);
 app.use('/api/colisao/v2/placar', placarRouter);
-mongoose
-    .connect(process.env.MONGO_URL, {
-        useNewUrlParser: true,
-        useCreateIndex: true,
-        useFindAndModify: false,
-        useUnifiedTopology: true,
-    })
-    .then(() => {
-        console.log('estamo conectado 🤪');
-    });
 
-const port = process.env.PORT || 3333;
-server.listen(port, () => {
-    console.log('Estamos on line 😋');
-});
+module.exports = app;

@@ -10,7 +10,7 @@ mongoose
         useUnifiedTopology: true,
     })
     .then(() => {
-        console.log('estamo conectado 🤪');
+        console.log('estamos conectado 🤪');
     });
 
 const port = process.env.PORT || 3333;
