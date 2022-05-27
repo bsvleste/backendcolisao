@@ -1,4 +1,5 @@
 const jwt = require('jsonwebtoken');
+// eslint-disable-next-line node/no-unpublished-require
 const config = require('../../config/config');
 
 module.exports = (req, res, next) => {
@@ -20,6 +21,7 @@ module.exports = (req, res, next) => {
     jwt.verify(token, config.JWT_KEY, (err, decoded) => {
         if (err) res.status(403).send({ erro: 'Token invalid' });
         req.userId = decoded.id;
+        req.email = decoded.email;
         return next();
     });
 };
