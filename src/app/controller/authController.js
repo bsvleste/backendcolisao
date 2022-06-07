@@ -14,6 +14,8 @@ module.exports = {
                 nome,
                 email,
                 senha,
+                permissions: [''],
+                roles: ['editor'],
             };
 
             if (await Jogador.findOne({ email }))
@@ -57,14 +59,24 @@ module.exports = {
             usuario.senha = undefined;
 
             const generetionToken = jwt.sign(
-                { id: usuario.id, email: usuario.email },
+                {
+                    id: usuario.id,
+                    email: usuario.email,
+                    permissions: usuario.permissions,
+                    roles: usuario.roles,
+                },
                 config.JWT_KEY
             );
             const isAdmTokens = jwt.sign(
-                { id: usuario.id, email: usuario.email },
+                {
+                    id: usuario.id,
+                    email: usuario.email,
+                    permissions: usuario.permissions,
+                    roles: usuario.roles,
+                },
                 config.JWT_ADM
             );
-            const { nome, isAdm, id } = usuario;
+            const { nome, isAdm, id, roles, permissions } = usuario;
             if (usuario.isAdm) {
                 return res.json({
                     tokenisAdm: isAdmTokens,
@@ -73,6 +85,8 @@ module.exports = {
                     email,
                     isAdm,
                     id,
+                    roles,
+                    permissions,
                 });
             }
             return res.json({
@@ -81,6 +95,8 @@ module.exports = {
                 isAdm,
                 id,
                 token: generetionToken,
+                roles,
+                permissions,
             });
         } catch (error) {
             return res.json({
@@ -91,7 +107,7 @@ module.exports = {
     },
     async list(req, res) {
         const { email } = req;
-        console.log(email);
+
         const usuario = await Jogador.findOne({ email }).select('+senha');
 
         if (!usuario) {
@@ -99,13 +115,18 @@ module.exports = {
                 .status(401)
                 .json({ error: true, message: 'Usuario não encontrado' });
         }
-        const { nome, isAdm, id } = usuario;
-        console.log('Chamou bebe');
+        const { nome, isAdm, id, permissions, roles } = usuario;
+
         return res.json({
             nome,
             isAdm,
             id,
             email,
+            permissions,
+            roles,
         });
+    },
+    async refresh(req, res) {
+        return req.json({ message: 'ok' });
     },
 };

@@ -1,6 +1,7 @@
 //importa as dependencias
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
+// eslint-disable-next-line node/no-unpublished-require
 const config = require('../../config/config');
 //schema do Jogador
 const JogadorSchema = new mongoose.Schema({
@@ -26,6 +27,12 @@ const JogadorSchema = new mongoose.Schema({
         required: true,
         default: false,
     },
+    permissions: [
+        {
+            type: String,
+        },
+    ],
+    roles: [{ type: String }],
     passwordResetToken: {
         type: String,
         select: false,
