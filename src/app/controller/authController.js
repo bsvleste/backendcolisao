@@ -19,15 +19,13 @@ module.exports = {
             };
 
             if (await Jogador.findOne({ email }))
-                return res
-                    .json({
-                        success: false,
-                        message: 'Usuario Ja Cadastrado',
-                    })
-                    .status(401);
+                return res.json({
+                    success: false,
+                    message: 'Usuario Ja Cadastrado',
+                });
 
             await Jogador.create(userDataSalve);
-            return res.json({
+            return res.status(200).json({
                 success: true,
                 message: 'usuario Cadastrado com SUCESSO',
             });
@@ -107,7 +105,6 @@ module.exports = {
     },
     async list(req, res) {
         const { email } = req;
-
         const usuario = await Jogador.findOne({ email }).select('+senha');
 
         if (!usuario) {
