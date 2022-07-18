@@ -27,7 +27,7 @@ module.exports = {
             await Jogador.create(userDataSalve);
             return res.status(200).json({
                 success: true,
-                message: 'usuario Cadastrado com SUCESSO',
+                message: 'Usuario Cadastrado com SUCESSO',
             });
         } catch (err) {
             //console.log(err);

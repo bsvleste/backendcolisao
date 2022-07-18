@@ -2,10 +2,17 @@ const Placar = require('../models/Placar');
 
 module.exports = {
     async deletaPlacar(req, res) {
-        await Placar.findById(req.params.id).deleteOne();
-        const novoPlacar = await Placar.find({}).sort('data');
-        req.io.emit('placar', novoPlacar);
-        return res.json({ success: true, message: 'deletado com sucesso' });
+        try {
+            await Placar.findById(req.params.id).deleteOne();
+            const novoPlacar = await Placar.find({}).sort('data');
+            req.io.emit('placar', novoPlacar);
+            return res.status(200).json({
+                success: true,
+                message: 'Placar Deletado com sucesso',
+            });
+        } catch (err) {
+            return res.status(400).json({ error: err });
+        }
     },
     async getPlacar(req, res) {
         try {
@@ -27,16 +34,21 @@ module.exports = {
         }
     },
     async update(req, res) {
-        const criaPlacar = await Placar.findById(req.body._id);
-        criaPlacar.set(req.body);
-        await criaPlacar.save();
+        try {
+            await Placar.findOneAndUpdate({ _id: req.params.id }, req.body, {
+                upsert: true,
+            });
+            /* await updatePlacar.save(); */
 
-        const listaPlacar = await Placar.find({}).sort('data');
-        req.io.emit('placar', listaPlacar);
-        return res.json({
-            success: true,
-            message: 'Placar atualizado com SUCESSO',
-        });
+            const listaPlacar = await Placar.find({}).sort('data');
+            req.io.emit('placar', listaPlacar);
+            return res.json({
+                success: true,
+                message: 'Placar atualizado com SUCESSO',
+            });
+        } catch (err) {
+            console.log(`Nao foi possivel fazer o update ${err}`);
+        }
     },
 
     async criarPlacar(req, res) {

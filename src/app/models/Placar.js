@@ -3,29 +3,29 @@ const mongoose = require('mongoose');
 
 //schema do Placar
 const PlacarSchema = new mongoose.Schema({
-    data: {
+    dataPartida: {
         type: Date,
         required: true,
         createIndexs: {
             unique: true,
         },
     },
-    segundo: {
-        colisao: {
+    segundoQuadro: {
+        segundoColisao: {
             type: Number,
             required: true,
         },
-        adversario: {
+        segundoAdversario: {
             type: Number,
             required: true,
         },
     },
-    primeiro: {
-        colisao: {
+    primeiroQuadro: {
+        primeiroColisao: {
             type: Number,
             required: true,
         },
-        adversario: {
+        primeiroAdversario: {
             type: Number,
             required: true,
         },
